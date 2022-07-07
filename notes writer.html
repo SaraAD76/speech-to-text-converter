@@ -1,0 +1,107 @@
+<!--This is a program for converting speeach to text-->
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>notes writer</title>
+    <style>
+
+    /*style sheet*/
+      @import url(http://fonts.googleapis.com/earlyaccess/droidarabickufi.css);
+      body{background:  linear-gradient(45deg,rgb(67,50,125),violet,rgb(124,142,201));
+        background-attachment: fixed;text-align: center; padding: 5%; }
+      h1{ color: rgb(34, 23, 72); font-family: 'Droid Arabic Kufi', serif;}
+      h2{color: rgba(246, 116, 51);font-family: 'Droid Arabic Kufi', serif;}
+      .output{
+        color: rgb(34, 23, 72);
+        font-size: 30;
+        font-family: 'Droid Arabic Kufi', serif;
+        margin: 1rem;
+        background-color: rgba(246, 116, 51, 0.317);
+        min-height: 100%;
+        min-width: 100%;
+        border-radius: 20px;}
+      div{margin: 1rem;}
+      div.wrapper{display: flex; flex-wrap: wrap; justify-content: center;}
+      .startRecord{height: 15rem;width: 15rem;border-radius: 50%;
+        margin: auto;
+        animation-name: pulse;
+        animation-duration: 1.5s;
+        animation-iteration-count: infinite;
+        animation-timing-function: linear;
+      }
+      .endRecord{height: 15rem;width: 15rem;border-radius: 50%;
+        margin: auto;        
+      }
+      @keyframes pulse{
+        0%{
+          box-shadow: 0px 0px 5px 0px rgba(255, 4, 4, 0.3);
+        }
+        65%{
+          box-shadow: 0px 0px 5px 15px rgba(190, 56, 56, 0.3);
+        }
+        90%{
+          box-shadow: 0px 0px 5px 20px rgba(79, 2, 2, 0);
+        }
+      }
+    </style>
+</head>
+
+<body>
+  <script>
+    //this flag used to turn the recognition on and off
+    var flag = true;
+    //this function is called when the button is pressed
+    function startRecording(){
+
+      //changing the style of the button for recording effect
+      document.getElementById('audioButton').className='startRecord';
+
+      //setting up recignition
+      window.SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
+      let finalTranscript = '';
+      let recognition = new window.SpeechRecognition();
+      recognition.interimResults = true;
+      recognition.maxAlternatives = 10;
+      recognition.lang = "ar-SA";
+      recognition.continuous = true;
+      
+      if (flag){  
+        //adding event listener to recognition to print the results when there's any
+        recognition.addEventListener('result', (event) => {
+        let interimTranscript = '';
+        for (let i = event.resultIndex, len = event.results.length; i < len; i++) {
+          let transcript = event.results[i][0].transcript;
+          if (event.results[i].isFinal) {
+            finalTranscript += transcript;
+          } else {
+            interimTranscript += transcript;
+          }
+        }
+        //printing recognition results to the browser
+        document.getElementById('output').innerHTML = finalTranscript + '<p style="font-size:30px;">' + interimTranscript + '<p/>';
+        })
+        //starting recognition and switching flag
+        recognition.start();
+        flag= false;}
+      else{
+        //if the flag was false then the recording button acts as a top button
+        document.getElementById('audioButton').className= 'endRecord';
+        recognition.abort();
+        flag= true;
+      }  
+    }
+  </script>
+
+  <!--page elements-->
+  <h1>مدوّن الملاحظات</h1>
+  <h2>يقوم البرنامج بتدوين الملاحظات الصوتية من أجلك</h2>
+  <div class="wrapper">
+      <input type ="image" src ='mic.png' class="endRecord" id="audioButton" onclick="startRecording()"></input></div>
+      <div class="output" id="output"></div>
+  </div>
+  
+</body>
+</html>
