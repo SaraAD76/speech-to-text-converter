@@ -1,0 +1,16 @@
+Setting up ESP32
+
+Goal:
+ESP32 can be used for speech recognition in various projects, here I attempt to set up and connect it to aurdino.
+
+Environment:
+Arduino IDE.
+
+Steps:
+
+1- Plugging the ESP32 to the device using micro cable.
+2- Installing the driver by Tools > Board > Boards Manager > from the search bar write "esp32".
+3- Selecting the name of your ESP32 by board Tools > Board .
+4- Selecting a port by Tools > Port and select a COM port available.
+5- Testing with a simple code that comes with the IDE, for example: https://www.arduino.cc/en/Tutorial/BuiltInExamples/Blink.
+6 Uploading the program using upload button.
